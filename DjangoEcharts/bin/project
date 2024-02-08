@@ -1,0 +1,84 @@
+#!/bin/bash
+
+CURRENT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+PROJECT_DIR=$(dirname "${CURRENT_DIR}")
+
+## shellcheck disable=SC2120
+status() {
+  uwsgi_status=$(ps -ef | grep "${PROJECT_DIR}"/deploy/uwsgi.ini | grep -v grep)
+  if [ -n "$uwsgi_status" ]; then
+    if [ "$1" == "print" ]; then
+      echo "project [running]"
+    fi
+    return 0
+  else
+
+    if [ "$1" == "print" ]; then
+      echo "project [not running]"
+    fi
+    return 1
+  fi
+}
+
+
+start() {
+  status
+  if [ $? -ne 0 ]; then
+    uwsgi --ini "${PROJECT_DIR}"/deploy/uwsgi.ini >/dev/null 2>&1
+    sleep 2
+    status
+    if [ $? -ne 0 ]; then
+      echo "start project failed"
+      return 1
+    else
+      echo "start project success"
+      return 0
+    fi
+  fi
+  echo "project is already [running]"
+  return 0
+}
+
+stop() {
+  status
+  if [ $? -ne 0 ]; then
+    echo "project is already [not running]"
+    return 0
+  else
+    uwsgi --stop "${PROJECT_DIR}"/deploy/uwsgi.pid
+    sleep 3
+    status
+    if [ $? -ne 0 ]; then
+      echo "stop project success"
+      return 0
+    else
+      echo "start project failed"
+      return 1
+    fi
+  fi
+}
+
+main() {
+  case $1 in
+  status)
+    status "print"
+    ;;
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    sleep 3
+    start
+    ;;
+  *) echo "usage: $0 [start|stop|restart|status]" ;;
+  esac
+}
+
+main "$1"
+
+
+
