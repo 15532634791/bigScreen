@@ -103,28 +103,28 @@ WSGI_APPLICATION = 'DjangoEcharts.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "bigScreen",
-#         "USER": "root",
-#         "PASSWORD": "123456",
-#         "HOST": "127.0.0.1",
-#         # "HOST": "192.168.90.129",
-#         "PORT": "3306",
-#     }
-# }
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "large_screen",
-        "USER": "user_large",
-        "PASSWORD": "largeqwer1234",
-        "HOST": "82.156.154.127",
-        "PORT": "3366",
+        "NAME": "bigScreen",
+        "USER": "root",
+        "PASSWORD": "123456",
+        "HOST": "127.0.0.1",
+        # "HOST": "192.168.90.129",
+        "PORT": "3306",
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "large_screen",
+#         "USER": "user_large",
+#         "PASSWORD": "largeqwer1234",
+#         "HOST": "",
+#         "PORT": "3366",
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
